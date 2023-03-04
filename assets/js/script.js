@@ -1,46 +1,14 @@
-// let dragElems = document.querySelectorAll(".drag-elem");
-// let dropElem = document.querySelector(".drop-elem");
 
+let icon = document.querySelector(".item i");
+let tableBody = document.querySelector("table tbody");
+let dragArea = document.querySelector(".item");
+let input = document.querySelector(".item input");
 
+icon.addEventListener("click", function () {
+    input.click();
+})
 
-// for (const elem of dragElems) {
-//     elem.ondragstart = (e) => {
-//         e.dataTransfer.setData("id", e.target.getAttribute("id"));
-//     }
-// }
-
-// dropElem.ondragover = (e) => {
-//     e.preventDefault();
-// }
-
-// dropElem.ondrop = (e) => {
-//     let id = e.dataTransfer.getData("id");
-//     let elem = document.getElementById(id);
-
-//     dropElem.append(elem)
-//     // if (dropElem.firstElementChild.nextElementSibling.nextElementSibling.childElementCount < 2
-//     // ) {
-//     //     dropElem.firstElementChild.nextElementSibling.nextElementSibling.childElementCount.appendChild(elem);
-//     // }
-
-//     // if (dropElem.firstElementChild.nextElementSibling.nextElementSibling.childElementCount < 1
-//     // ) {
-//     //     dropElem.firstElementChild.nextElementSibling.childElementCount.appendChild(elem);
-//     // }
-//     // if (dropElem.firstElementChild.childElementCount < 2
-//     //     ) {
-//     //         dropElem.firstElementChild.childElementCount.appendChild(elem);
-//     //     }
-
-
-let icon = document.querySelector("i");
-
-let tableBody = document.querySelector(".table tbody")
-
-
-
-
-let input = document.querySelector("input");
+checkTable();
 input.addEventListener("change", function (e) {
     for (const file of e.target.files) {
 
@@ -56,7 +24,7 @@ input.addEventListener("change", function (e) {
                 <td><i class="remove fa-solid fa-trash-can"></i></td>              
               </tr>`
 
-              checkTable();
+            checkTable();
 
             let deleteImg = document.querySelectorAll(".remove");
 
@@ -72,17 +40,45 @@ input.addEventListener("change", function (e) {
 })
 
 
-icon.addEventListener("click", function () {
-    input.click();
-})
+dragArea.addEventListener("dragover", function (e) {
+    e.preventDefault();
+  });
+  
+  dragArea.addEventListener("drop", function (e) {
+    e.preventDefault();
+  
+    for (const file of e.dataTransfer.files) {
+      let reader = new FileReader();
+  
+      reader.onload = function (event) {
+        tableBody.innerHTML += `<tr>
+              <td><img src="${event.currentTarget.result}" alt=""></td>
+              <td>${file.name}</td>
+              <td>${file.size}</td>
+              <td><i class="remove fa-solid fa-trash-ca"></i></td>
+              </tr>`;
+  
+        let deleteIcons = document.querySelectorAll(".remove");
+  
+        deleteIcons.forEach((icon) => {
+          icon.addEventListener("click", function () {
+            icon.parentNode.parentNode.remove();
+          });
+        });
+      };
+  
+      reader.readAsDataURL(file);
+    }
+  });
 
-checkTable();
 
 
-function checkTable(){
+
+
+function checkTable() {
     if (tableBody.innerHTML.trim() == "") {
         tableBody.parentNode.classList.add("d-none")
-    }else{
+    } else {
         tableBody.parentNode.classList.remove("d-none")
     }
 }
