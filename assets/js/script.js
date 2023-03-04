@@ -6,6 +6,7 @@ let input = document.querySelector(".item input");
 
 icon.addEventListener("click", function () {
     input.click();
+    dragArea.click();
 })
 
 checkTable();
@@ -58,9 +59,9 @@ dragArea.addEventListener("dragover", function (e) {
               <td><i class="remove fa-solid fa-trash-ca"></i></td>
               </tr>`;
   
-        let deleteIcons = document.querySelectorAll(".remove");
+        let deleteImg = document.querySelectorAll(".remove");
   
-        deleteIcons.forEach((icon) => {
+        deleteImg.forEach((icon) => {
           icon.addEventListener("click", function () {
             icon.parentNode.parentNode.remove();
           });
